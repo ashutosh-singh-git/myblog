@@ -10,16 +10,28 @@
     <title>My Blog</title>
 </head>
 <body>
-<div class="page-header" align="left">
+<div class="page-header" id="header" align="left">
     <p><a href="/">Rider Wolf</a></p>
 </div>
-<div class="content container">
-    <div class="row">
-        <div class="col-md-12">
-            {% block content %}
-            {% endblock %}
-        </div>
-    </div>
-</div>
+
+{% block content %}
+{% endblock %}
+
 </body>
+<script>
+    window.onscroll = function () {
+        scrollFunction()
+    };
+    var header = document.getElementById("header");
+    var sticky = header.offsetTop;
+
+    function scrollFunction() {
+        if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+        } else {
+            header.classList.remove("sticky");
+        }
+    }
+
+</script>
 </html>

@@ -1,32 +1,51 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 {% block content %}
-    <div class="col-md-8">
-        {% for post in posts %}
-            <div class="blog_card col-md-12">
-                <div class="row">
-                    <div class="list_title col-md-12">
-                        <p><a href={% url 'blog_detail' slug=post.slug pk=post.pk %}>{{ post.title }}</a></p>
+    <div class="content container">
+        <div class="col-md-12">
+            <div class="col-md-8">
+                {% if posts.all %}
+                    {% for post in posts %}
+                        <div class="blog_card blog_border col-md-12">
+                            <div class="row">
+                                <div class="list_title col-md-12">
+                                    <p>
+                                        <a href={% url 'blog_detail' cat_slug=cat_slug slug=post.slug pk=post.pk %}>{{ post.title }}</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img class="thumbnail_image" src={{ post.get_thumbnail_url }}>
+                                </div>
+                                <div class="col-md-8">
+                                    <p class="blog_description">{{ post.description }}</p>
+                                    <p class="blog_posted_on">{{ post.posted_on }}</p>
+                                    <p>{{ post.body|slice:":100" }}...</p>
+                                    <p class="badge" style="font-size: 1.5rem">{{ post.category }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="blog_card col-md-12">
+                        <span class="text-info">No articles found for this category</span>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <img class="thumbnail_image" src={{ post.get_thumbnail_url }}>
-                    </div>
-                    <div class="col-md-8">
-                        <p class="blog_description">{{ post.description }}</p>
-                        <p class="blog_posted_on">{{ post.posted_on }}</p>
-                        <p>{{ post.body|slice:":100" }}...</p>
-                        <p class="badge" style="font-size: 1.5rem">{{ post.category }}</p>
-                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-1">
+
+            </div>
+            <div class="blog_card blog_border col-md-4">
+                <h2 align="center">Topics</h2>
+                <div class="list-group">
+                    {% for category in categories %}
+                        <a href="{% url 'index' slug=category.slug %}"
+                           class="list-group-item {% if category.slug == cat_slug %}active{% endif %}">
+                            {{ category.title }}</a>
+                    {% endfor %}
                 </div>
             </div>
-        {% endfor %}
-    </div>
-    <div class="col-md-1">
-
-    </div>
-    <div class="blog_card col-md-4">
-        <span class="border-bottom">Something</span>
+        </div>
     </div>
 {% endblock %}

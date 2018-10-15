@@ -1,6 +1,6 @@
 import logging
 
-from django.db import models
+from django.db import models, transaction
 
 
 def thumbnail(instance, filename):
@@ -20,6 +20,7 @@ class Blog(models.Model):
     description = models.CharField(max_length=100, default="New Post")
     body = models.TextField()
     posted_on = models.DateField(db_index=True, auto_now_add=True)
+    views = models.IntegerField(default=0)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -81,6 +82,20 @@ class Blog(models.Model):
         if storage.exists(thumb_file_path):
             return storage.url(thumb_file_path)
         return ""
+
+    @classmethod
+    def increment_view(cls, pk):
+        with transaction.atomic():
+            blog = (
+                cls.objects
+                    .select_for_update()
+                    .get(id=pk)
+            )
+
+            blog.views += 1
+            blog.save()
+
+        return blog
 
 
 class Category(models.Model):
