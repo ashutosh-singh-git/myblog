@@ -1,9 +1,10 @@
 import logging
 
 from django.db import models, transaction
+from django.utils.text import slugify
 
 
-def thumbnail(instance, filename):
+def thumbnail_name(instance, filename):
     import os
     from django.utils.timezone import now
     filename_base, filename_ext = os.path.splitext(filename)
@@ -15,7 +16,7 @@ def thumbnail(instance, filename):
 
 class Blog(models.Model):
     title = models.CharField(max_length=100, unique=True)
-    thumbnail = models.ImageField(upload_to=thumbnail, blank=True)
+    thumbnail = models.ImageField(upload_to=thumbnail_name, blank=True)
     slug = models.SlugField(max_length=100, unique=True)
     description = models.CharField(max_length=100, default="New Post")
     body = models.TextField()
@@ -76,9 +77,10 @@ class Blog(models.Model):
         from django.core.files.storage import default_storage as storage
         if not self.thumbnail:
             return ""
-        file_path = self.thumbnail.name
-        filename_base, filename_ext = os.path.splitext(file_path)
-        thumb_file_path = "%s%s" % (filename_base, filename_ext)
+        # file_path = self.thumbnail.name
+        # filename_base, filename_ext = os.path.splitext(file_path)
+        # thumb_file_path = "%s%s" % (filename_base, filename_ext)
+        thumb_file_path = "%s" % (self.thumbnail.name)
         if storage.exists(thumb_file_path):
             return storage.url(thumb_file_path)
         return ""
@@ -96,6 +98,27 @@ class Blog(models.Model):
             blog.save()
 
         return blog
+
+
+def get_image_filename(instance, filename):
+    title = instance.post.title
+    slug = slugify(title)
+    return "blog_images/%s-%s" % (slug, filename)
+
+
+class Images(models.Model):
+    post = models.ForeignKey(Blog, default=None, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=get_image_filename, blank=True)
+
+    def get_image_url(self):
+        import os
+        from django.core.files.storage import default_storage as storage
+        if not self.image:
+            return ""
+        thumb_file_path = "%s" % (self.image.name)
+        if storage.exists(thumb_file_path):
+            return storage.url(thumb_file_path)
+        return ""
 
 
 class Category(models.Model):
