@@ -1,5 +1,5 @@
 {% extends 'blog/base.html' %}
-
+{% load myblog_tags %}
 {% block content %}
     <div class="content container">
         <div class="col-md-12">
@@ -18,11 +18,8 @@
                         </div>
                     {% endif %}
                     <div class="blog_detail_content">
-                        {{ blog.body|safe|linebreaksbr }}
+                        {{ blog.body|process_image| safe|linebreaksbr }}
                     </div>
-                    {% for blog_img in blog_images %}
-                        <div class="blog_detail_image" style="background-image: url({{ blog_img.get_image_url }})"></div>
-                    {% endfor %}
                 </div>
             </div>
         </div>

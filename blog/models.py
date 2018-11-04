@@ -77,9 +77,6 @@ class Blog(models.Model):
         from django.core.files.storage import default_storage as storage
         if not self.thumbnail:
             return ""
-        # file_path = self.thumbnail.name
-        # filename_base, filename_ext = os.path.splitext(file_path)
-        # thumb_file_path = "%s%s" % (filename_base, filename_ext)
         thumb_file_path = "%s" % (self.thumbnail.name)
         if storage.exists(thumb_file_path):
             return storage.url(thumb_file_path)
@@ -111,7 +108,6 @@ class Images(models.Model):
     image = models.ImageField(upload_to=get_image_filename, blank=True)
 
     def get_image_url(self):
-        import os
         from django.core.files.storage import default_storage as storage
         if not self.image:
             return ""

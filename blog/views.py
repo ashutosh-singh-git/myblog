@@ -1,8 +1,8 @@
+from django import template
 from django.shortcuts import render
-from django.template.defaultfilters import register
 from django.utils import timezone
 
-from .models import Blog, Category, Images
+from .models import Blog, Category
 
 
 def search(request, slug):
@@ -14,8 +14,7 @@ def search(request, slug):
 
 def blog_detail(request, cat_slug, slug, pk):
     blog = Blog.increment_view(pk=pk)
-    images = Images.objects.all().filter(post=blog.id)
-    return render(request, 'blog/blog_detail.html', {'blog': blog, 'blog_images': images})
+    return render(request, 'blog/blog_detail.html', {'blog': blog})
 
 
 def home(request):
@@ -26,6 +25,3 @@ def home(request):
                   {'carousel_blogs': carousel_blogs, 'popular_blogs': popular_blogs, 'categories': categories})
 
 
-@register.filter
-def strip_double_quotes(quoted_string):
-    return quoted_string.replace('"', '')
