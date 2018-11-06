@@ -1,6 +1,9 @@
 import logging
 
+import boto3
+from PIL import Image
 from django.db import models, transaction
+from django.dispatch import receiver
 from django.utils.text import slugify
 
 
@@ -73,7 +76,6 @@ class Blog(models.Model):
             return "error"
 
     def get_thumbnail_url(self):
-        import os
         from django.core.files.storage import default_storage as storage
         if not self.thumbnail:
             return ""
@@ -107,14 +109,45 @@ class Images(models.Model):
     post = models.ForeignKey(Blog, default=None, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=get_image_filename, blank=True)
 
+    def __str__(self):
+        return self.post.title + ': ' + self.image.name
+
     def get_image_url(self):
         from django.core.files.storage import default_storage as storage
         if not self.image:
             return ""
-        thumb_file_path = "%s" % (self.image.name)
+        thumb_file_path = "%s" % self.image.name
         if storage.exists(thumb_file_path):
             return storage.url(thumb_file_path)
         return ""
+
+    def save(self, size=(800, 500), **kwargs):
+        from django.core.files.storage import default_storage as storage
+        import io
+        import os
+        from myblog import settings
+
+        if not self.id and not self.image:
+            return
+        super(Images, self).save()
+        filename = str(self.image.name)
+        filename_base, filename_ext = os.path.splitext(filename)
+        existing_file = storage.open(filename, 'r')
+        image = Image.open(existing_file)
+        image = image.resize(size, Image.ANTIALIAS)
+        sfile = io.BytesIO()
+        image.save(sfile, filename_ext.replace('.', ''))
+        sfile.seek(0)
+        s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                          aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+        s3.upload_fileobj(sfile, settings.AWS_STORAGE_BUCKET_NAME, settings.AWS_LOCATION + '/' + filename,
+                          ExtraArgs={'ACL': 'public-read'})
+        existing_file.close()
+
+
+@receiver(models.signals.post_delete, sender=Images)
+def remove_file_from_s3(sender, instance, using, **kwargs):
+    instance.image.delete(save=False)
 
 
 class Category(models.Model):
