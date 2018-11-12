@@ -7,24 +7,27 @@
                 {% if posts.all %}
                     {% for post in posts %}
                         <div class="blog_card blog_border col-md-12">
-                            <div class="row">
-                                <div class="list_title col-md-12">
+                            <a style="text-decoration: none;color:inherit"
+                               href={% url 'blog_detail' cat_slug=cat_slug slug=post.slug pk=post.pk %}>
+                                <div class="row">
+                                    <div class="list_title col-md-12">
                                     <span>
-                                        <a href={% url 'blog_detail' cat_slug=cat_slug slug=post.slug pk=post.pk %}>{{ post.title }}</a>
+                                        <h3>{{ post.title }}</h3>
                                     </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <img class="thumbnail_image" src={{ post.get_thumbnail_url }}>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img class="thumbnail_image" src={{ post.get_thumbnail_url }}>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p class="blog_description">{{ post.description|slice:":40" }}...</p>
+                                        <p class="blog_posted_on">{{ post.posted_on }}</p>
+                                        <p>{{ post.body|safe|slice:":120" }}...</p>
+                                        <p class="badge badge-pill badge-secondary">{{ post.category }}</p>
+                                    </div>
                                 </div>
-                                <div class="col-md-8">
-                                    <p class="blog_description">{{ post.description }}</p>
-                                    <p class="blog_posted_on">{{ post.posted_on }}</p>
-                                    <p>{{ post.body|slice:":100" }}...</p>
-                                    <p class="badge badge-pill badge-secondary">{{ post.category }}</p>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                     {% endfor %}
                 {% else %}
