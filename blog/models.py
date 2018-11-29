@@ -5,6 +5,8 @@ from PIL import Image
 from django.db import models, transaction
 from django.dispatch import receiver
 from django.utils.text import slugify
+from markdownx.utils import markdownify
+from mdeditor.fields import MDTextField
 
 
 def thumbnail_name(instance, filename):
@@ -22,10 +24,14 @@ class Blog(models.Model):
     thumbnail = models.ImageField(upload_to=thumbnail_name, blank=True)
     slug = models.SlugField(max_length=100, unique=True)
     description = models.CharField(max_length=100, default="New Post")
-    body = models.TextField()
+    body = MDTextField()
     posted_on = models.DateField(db_index=True, auto_now_add=True)
     views = models.IntegerField(default=0)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
+
+    @property
+    def formatted_markdown(self):
+        return markdownify(self.body)
 
     def __str__(self):
         return self.title
