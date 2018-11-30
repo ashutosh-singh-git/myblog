@@ -9,12 +9,12 @@ class ImagesInline(admin.TabularInline):
     extra = 0
 
 
-class BlogAdmin(admin.ModelAdmin):
+class BlogAdmin(MarkdownxModelAdmin):
     inlines = [
         ImagesInline,
     ]
 
 
-admin.site.register(Blog, MarkdownxModelAdmin)
+admin.site.register(Blog, BlogAdmin)
 admin.site.register(Category)
 admin.site.register(Images)
