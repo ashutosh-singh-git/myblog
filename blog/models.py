@@ -21,6 +21,7 @@ def thumbnail_name(instance, filename):
 
 class Blog(models.Model):
     title = models.CharField(max_length=100, unique=True)
+    tags = models.CharField(max_length=100, default='')
     thumbnail = models.ImageField(upload_to=thumbnail_name, blank=True)
     slug = models.SlugField(max_length=100, unique=True)
     description = models.CharField(max_length=100, default="New Post")

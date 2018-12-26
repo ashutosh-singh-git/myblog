@@ -1,10 +1,12 @@
 {% extends 'blog/base.html' %}
-
+{% block meta %}
+    {% with description="solo mototcycle travels, tech and everything related in life" title="Rider Wolf" keywords="solo travel,ride,motorcycle tours, tech, developer" %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock meta %}
 {% block content %}
     <div class="cover">
         <div class="col-md-4 offset-md-1">
-            <h1>We Ride We Reach</h1>
-            <h3>Riding on the road</h3>
         </div>
     </div>
     <div class="content container">
