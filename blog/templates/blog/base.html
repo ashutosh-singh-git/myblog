@@ -6,9 +6,11 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131435199-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
+
         function gtag() {
             dataLayer.push(arguments);
         }
+
         gtag('js', new Date());
         gtag('config', 'UA-131435199-1');
     </script>
@@ -28,13 +30,11 @@
     <meta name="google-site-verification" content="xLF5KZEwGPB69_ZsPeyQLEwgOBq9CYjHiEhzdnTIe_A"/>
 </head>
 <body>
-<div class="page-header" id="header" align="left">
-    <span><a href="/">Rider Wolf</a></span>
-</div>
-
-{% block content %}
-{% endblock content %}
-
+{% include "blog/header.html" %}
+<main>
+    {% block content %}
+    {% endblock content %}
+</main>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -44,13 +44,19 @@
         scrollFunction()
     };
     var header = document.getElementById("header");
+    var logo = document.getElementById("logo");
+    var body = document.getElementsByTagName("body")[0];
     var sticky = header.offsetTop;
 
     function scrollFunction() {
-        if (window.pageYOffset > sticky) {
+        if (window.pageYOffset > 62) {
             header.classList.add("sticky");
+            logo.classList.add("d-none");
+            body.classList.add("padding-sticky");
         } else {
             header.classList.remove("sticky");
+            logo.classList.remove("d-none");
+            body.classList.remove("padding-sticky");
         }
     }
 
