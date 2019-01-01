@@ -43,10 +43,9 @@
     window.onscroll = function () {
         scrollFunction()
     };
-    var header = document.getElementById("header");
-    var logo = document.getElementById("logo");
-    var body = document.getElementsByTagName("body")[0];
-    var sticky = header.offsetTop;
+    let header = document.getElementById("header");
+    let logo = document.getElementById("logo");
+    let body = document.getElementsByTagName("body")[0];
 
     function scrollFunction() {
         if (window.pageYOffset > 62) {
@@ -60,5 +59,17 @@
         }
     }
 
+    if ($(window).width() < 768) {
+        let content = document.getElementById("detail");
+        content.classList.remove("container");
+    }
+
+    function popupwindow(url, title, win) {
+        const w = 520;
+        const h = 520;
+        var y = win.top.outerHeight / 2 + win.top.screenY - (h / 2);
+        var x = win.top.outerWidth / 2 + win.top.screenX - (w / 2);
+        return win.open(encodeURI(url), title, 'location=yes, status=yes,scrollbars=yes, width=' + w + ', height=' + h + ', top=' + y + ', left=' + x);
+    }
 </script>
 </html>
