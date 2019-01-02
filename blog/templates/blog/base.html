@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131435199-1"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ G_ANALYTICS }}"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -12,9 +12,8 @@
         }
 
         gtag('js', new Date());
-        gtag('config', 'UA-131435199-1');
+        gtag('config', '{{ G_ANALYTICS }}');
     </script>
-
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link href="//fonts.googleapis.com/css?family=Audiowide&subset=latin,latin-ext" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
