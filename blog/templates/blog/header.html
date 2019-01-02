@@ -4,10 +4,13 @@
             <div class="col-md-6 col-sm-12 logo" id="logo"><span><a href="/">Rider Wolf</a></span></div>
             <nav class="col-md-6 col-sm-12 d-inline">
                 <div class="navigation align-items-center">
-                    <ul class="nav nav-pills navbar-right nav-justified">
-                        <li class="mx-md-4 m-2 active"><a class="font-thin text-muted" href="#">HOME</a></li>
-                        <li class="mx-md-4 m-2"><a class="font-thin text-muted" href="/category">CATEGORIES</a></li>
-                        <li class="mx-md-4 m-2"><a class="font-thin text-muted" href="#">ABOUT US</a></li>
+                    <ul class="nav nav-pills navbar-right">
+                        {% for category in categories %}
+                            <li class="mx-md-4 m-3 {% if category.slug == cat_slug %}active{% endif %}"><a
+                                    class="font-thin text-muted text-uppercase"
+                                    href="{% url 'search' slug=category.slug %}">{{ category.title }}</a></li>
+                        {% endfor %}
+                        <li class="mx-md-4 m-3"><a class="font-thin text-muted" href="#">ABOUT US</a></li>
                     </ul>
                 </div>
             </nav>

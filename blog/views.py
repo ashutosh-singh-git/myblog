@@ -15,6 +15,10 @@ def search(request, slug=''):
     return render(request, 'blog/search.html', {'posts': posts, 'categories': categories, 'cat_slug': slug})
 
 
+def about_us(request):
+    return render(request, 'blog/blog_detail.html')
+
+
 def blog_detail(request, cat_slug, slug, pk):
     blog = Blog.increment_view(pk=pk)
     return render(request, 'blog/blog_detail.html', {'blog': blog})
