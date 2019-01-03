@@ -16,12 +16,14 @@ def search(request, slug=''):
 
 
 def about_us(request):
-    return render(request, 'blog/blog_detail.html')
+    categories = Category.objects.all()[:4]
+    return render(request, 'blog/about_us.html', {'categories': categories})
 
 
 def blog_detail(request, cat_slug, slug, pk):
+    categories = Category.objects.all()[:4]
     blog = Blog.increment_view(pk=pk)
-    return render(request, 'blog/blog_detail.html', {'blog': blog})
+    return render(request, 'blog/blog_detail.html', {'blog': blog, 'categories': categories})
 
 
 def home(request):

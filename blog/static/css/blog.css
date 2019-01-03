@@ -36,6 +36,10 @@
     font-size: 1rem;
 }
 
+.active a {
+    color: #FF5800!important;
+}
+
 .logo span, .logo span a, .logo span a:visited, .logo span a:active {
     color: #FF5800;
     font-size: 2.5rem;
@@ -75,9 +79,29 @@
     font-size: 0.8rem;
 }
 
-.blog_description {
-    font-size: 1.3rem;
+.about_description {
+    font-size: 1.2rem;
+    line-height: 2rem;
+    letter-spacing: 0.02rem;
+    /*font-weight: bold;*/
+}
+
+.about_title {
+    font-size: 3rem;
     font-weight: bold;
+}
+
+@media screen and (max-width: 768px){
+    .about_title {
+        font-size: 2.4rem;
+        text-align: center;
+    }
+
+    .about_description {
+        font-size: 1rem;
+        line-height: 1.8rem;
+        text-align: center;
+    }
 }
 
 /*h1, h2, h3, h4 {*/
@@ -92,7 +116,7 @@
 .list_title span a {
     font-size: 1.8rem;
     font-family: "Lucida Grande", sans-serif;
-    color: #6c757d!important;
+    color: #6c757d !important;
 }
 
 .date {
@@ -271,7 +295,7 @@ span .fa {
 }
 
 .blog_detail_content p:first-child {
-    color: #6c757d!important;
+    color: #6c757d !important;
 }
 
 .blog_detail_content p:first-child:first-letter {
@@ -302,7 +326,7 @@ img + br + em {
     font-family: sans-serif;
     display: inherit;
     text-align: center;
-    color: #6c757d!important;
+    color: #6c757d !important;
     font-size: 95%;
     margin: .5rem 0 0;
 }
@@ -311,3 +335,14 @@ p img {
     max-height: 650px;
     width: 100%;
 }
+
+.circular-dp {
+    width: 25vmin;
+    height: 25vmin;
+    min-height: 15vmax;
+    min-width: 15vmax;
+    background-color: #6c757d !important;
+    /*background-image: url("http://www.whatcar.com/car-leasing/images/vehicles/medium/100895.jpg");*/
+    background-size: cover;
+}
+
